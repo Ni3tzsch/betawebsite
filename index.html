@@ -398,13 +398,18 @@
   /* Sticky title inside modal */
   .modal-sticky-head{
     flex-shrink:0;
-    padding:clamp(22px,3.5vw,40px) clamp(22px,4vw,52px) 20px;
+    padding:clamp(18px,2.8vw,32px) clamp(22px,4vw,52px) 20px;
+    padding-right:clamp(56px,6vw,72px);
     background:linear-gradient(160deg,rgba(90,67,96,.99) 0%,rgba(50,32,58,.99) 100%);
     border-bottom:1px solid rgba(244,239,244,.1);
     position:relative;
     z-index:2;
   }
-  .modal-sticky-head .modal-close-row{display:flex;justify-content:flex-end;margin-bottom:14px}
+  .modal-sticky-head .modal-close-row{
+    position:absolute;
+    top:clamp(12px,1.8vw,18px);
+    right:clamp(14px,2vw,20px);
+  }
   .modal-sticky-head .eyebrow{animation:none;opacity:1;margin-bottom:12px}
   .modal-sticky-head h2{font-size:clamp(1.6rem,3.5vw,2.4rem);margin:0}
 
