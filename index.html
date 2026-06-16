@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DJASSApp | L'entrepreneuriat à portée de voix</title>
+<meta name="description" content="DJASSApp transforme la voix en commerce. Pré-lancement bientôt. Pour les entrepreneurs délaissés par le digital.">
+<link rel="icon" href="./favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..800;1,14..32,400..800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#241829;          /* deep neutral plum base (no red) */
+    --ink-2:#1A111F;         /* deeper */
+    --aubergine:#765979;     /* brand */
+    --aubergine-deep:#5A4360;/* darker surface */
+    --paper:#F4EFF4;         /* off-white */
+    --dim:#C3AEC6;           /* muted mauve text */
+    --dim-2:#9A85A0;
+    --g0:#EADEDD;            /* gradient start */
+    --g1:#FED6E8;            /* gradient end */
+    --pink:#FED6E8;          /* solid accent */
+    --line:rgba(244,239,244,0.13);
+    --line-2:rgba(244,239,244,0.07);
+    --grad:linear-gradient(120deg,#EADEDD 0%,#FED6E8 100%);
+    --max:1180px;
+    --ease:cubic-bezier(.2,.7,.2,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{width:100%;max-width:100%;scroll-behavior:smooth;scroll-padding-top:86px}
+  body{
+    background:var(--ink);
+    color:var(--paper);
+    font-family:"Inter",system-ui,sans-serif;
+    font-weight:400;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    max-width:100%;
+    overflow-x:clip;
+    overflow-y:auto;
+  }
+  ::selection{background:var(--pink);color:var(--ink)}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;height:auto}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 28px}
+
+  .mono{font-family:"Inter",sans-serif;font-size:.74rem;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--dim)}
+  .grad-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .logotype{font-weight:800;font-style:italic;letter-spacing:-.02em}
+
+  /* ---------- NAV ---------- */
+  nav{position:fixed;top:0;left:0;right:0;z-index:50;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:18px 28px;transition:backdrop-filter .4s,background .4s,border-color .4s;
+    border-bottom:1px solid transparent;transform:translateZ(0)}
+  nav.scrolled{background:rgba(36,24,41,.82);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom:1px solid rgba(254,214,232,.1)}
+  .brand{display:flex;align-items:center;gap:11px;font-size:1.3rem}
+  .brand .mark{width:34px;height:32px;flex:none;display:block;object-fit:contain;
+    filter:drop-shadow(0 8px 18px rgba(254,214,232,.18))}
+  .brand .name{font-weight:800;font-style:italic;letter-spacing:0;
+    background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .nav-right{display:flex;align-items:center;gap:22px}
+  .nav-badge{font-size:.66rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--pink);
+    border:1px solid rgba(254,214,232,.32);border-radius:999px;padding:5px 11px}
+  .btn{font-weight:600;font-size:.92rem;cursor:pointer;border:none;
+    transition:transform .25s var(--ease),box-shadow .25s,opacity .25s}
+  .btn-primary{background:var(--grad);color:var(--ink);padding:11px 20px;border-radius:999px}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 32px -8px rgba(254,214,232,.5)}
+  .btn-ghost{color:var(--paper);padding:11px 4px;position:relative}
+  .btn-ghost::after{content:"";position:absolute;left:4px;right:4px;bottom:4px;height:1px;background:var(--paper);transform:scaleX(0);transform-origin:left;transition:transform .3s var(--ease)}
+  .btn-ghost:hover::after{transform:scaleX(1)}
+  @media(max-width:860px){.nav-right{gap:14px}.nav-badge{display:none}}
+  @media(max-width:640px){nav{padding:14px 18px}.brand{font-size:1.12rem}.brand .mark{width:30px;height:28px}.nav-badge,.nav-right .btn-ghost{display:none}.nav-right{gap:10px}.nav-right .btn-primary{font-size:.86rem;padding:10px 15px}}
+
+  /* ---------- HERO ---------- */
+  header{position:relative;min-height:100vh;min-height:100svh;display:flex;flex-direction:column;justify-content:center;
+    padding:128px 0 132px;overflow:hidden}
+  .glow{position:absolute;border-radius:50%;filter:blur(95px);pointer-events:none;z-index:0}
+  .glow.a{width:560px;height:560px;background:radial-gradient(circle,rgba(254,214,232,.30),transparent 65%);top:-150px;right:-130px}
+  .glow.b{width:540px;height:540px;background:radial-gradient(circle,rgba(118,89,121,.55),transparent 62%);bottom:-220px;left:-170px}
+  .hero-inner{position:relative;z-index:2;text-align:center;display:flex;flex-direction:column;align-items:center}
+  .eyebrow{display:inline-flex;align-items:center;gap:10px;margin-bottom:28px;opacity:0;animation:rise .9s var(--ease) .1s forwards}
+  .eyebrow .tick{width:22px;height:1px;background:var(--dim)}
+  h1.hero{font-weight:800;letter-spacing:-.035em;line-height:.98;
+    font-size:clamp(2.9rem,8.6vw,6.4rem);max-width:15ch}
+  h1.hero .l{display:block;opacity:0;transform:translateY(28px);animation:rise 1s var(--ease) forwards}
+  h1.hero .l:nth-child(1){animation-delay:.18s}
+  h1.hero .l:nth-child(2){animation-delay:.30s}
+  h1.hero .em{font-style:italic}
+  @keyframes rise{to{opacity:1;transform:translateY(0)}}
+
+  /* waveform signature (gradient) */
+  .wave{display:flex;align-items:center;gap:5px;height:64px;margin:36px 0 30px;opacity:0;animation:rise 1s var(--ease) .5s forwards}
+  .wave span{width:5px;border-radius:6px;background:var(--grad);animation:eq 1.4s ease-in-out infinite;transform-origin:center}
+  @keyframes eq{0%,100%{height:10px;opacity:.45}50%{height:var(--h,40px);opacity:1}}
+
+  .lede{font-size:clamp(1.05rem,2.1vw,1.3rem);color:#E4D8E6;max-width:46ch;margin-bottom:36px;font-weight:330;
+    opacity:0;animation:rise 1s var(--ease) .62s forwards}
+  .lede b{color:var(--paper);font-weight:600}
+  .hero-cta{display:flex;flex-wrap:wrap;justify-content:center;gap:18px 26px;align-items:center;opacity:0;animation:rise 1s var(--ease) .74s forwards}
+  .btn-lg{padding:15px 26px;font-size:1rem}
+  .hero-cta .btn-ghost{padding-bottom:14px}
+  .hero-cta .btn-ghost::after{bottom:7px}
+  .scroll-hint{position:absolute;left:0;right:0;bottom:34px;margin:0 auto;width:max-content;z-index:2;
+    font-size:.62rem;font-weight:600;text-transform:uppercase;color:var(--dim);
+    display:flex;flex-direction:column;align-items:center;gap:8px;opacity:0;animation:rise 1s var(--ease) 1s forwards}
+  .scroll-hint span:first-child{display:block;letter-spacing:.2em;text-indent:.2em;text-align:center;white-space:nowrap}
+  .scroll-hint .bar{width:1px;height:34px;background:linear-gradient(var(--dim),transparent);animation:drop 2s ease-in-out infinite}
+  @media(max-height:720px){.scroll-hint{display:none}}
+  @keyframes drop{0%,100%{opacity:.3;transform:scaleY(.6)}50%{opacity:1;transform:scaleY(1)}}
+
+  /* ---------- SECTIONS ---------- */
+  section{position:relative;z-index:2}
+  .sec{padding:104px 0}
+  .sec-head{max-width:720px;margin-bottom:52px}
+  .sec-head.centered{text-align:center;margin:0 auto 52px}
+  .sec-head .eyebrow{animation:none;opacity:1}
+  .sec-head.centered .eyebrow{justify-content:center}
+  h2{font-weight:800;letter-spacing:-.03em;line-height:1.05;
+    font-size:clamp(2rem,4.6vw,3.2rem);margin:16px 0 0}
+  h1.hero,h2,.one-phrase-title{text-wrap:balance}
+  .lede,.sec-head p,.one-phrase-text,.prob p,.step p,.inv-intro,.form-card .sub{text-wrap:pretty}
+  h2 .em{font-style:italic}
+  .sec-head p{color:#D6C8D8;font-size:1.08rem;font-weight:330;margin-top:22px;max-width:54ch}
+  .sec-head.centered p{margin-left:auto;margin-right:auto;max-width:68ch}
+  .reveal{opacity:0;transform:translateY(34px);transition:opacity .9s var(--ease),transform .9s var(--ease);will-change:opacity,transform}
+  .reveal.in{opacity:1;transform:none;will-change:auto}
+  .motion-paused span{animation-play-state:paused!important}
+
+  /* ---------- ONE PHRASE ---------- */
+  .one-phrase{padding:96px 0 104px;overflow:hidden}
+  .one-phrase-grid{display:grid;grid-template-columns:minmax(0,.92fr) minmax(360px,1.08fr);gap:clamp(36px,5vw,72px);align-items:center}
+  .one-phrase-copy{max-width:680px;min-width:0}
+  .one-phrase .eyebrow{animation:none;opacity:1}
+  .one-phrase-title{font-weight:800;font-size:clamp(2.6rem,5.6vw,5rem);line-height:1.08;letter-spacing:0;margin:44px 0 26px;max-width:11.8ch}
+  .one-phrase-title .em{font-style:italic}
+  .one-phrase-text{color:#D6C8D8;font-size:clamp(1.05rem,1.7vw,1.28rem);font-weight:330;line-height:1.55;max-width:38ch}
+  .one-phrase-media{min-height:420px;display:flex;align-items:center;justify-content:center;min-width:0}
+  .one-phrase-media img{display:block;width:min(840px,55vw);max-width:100%;aspect-ratio:1500/1240;object-fit:contain;filter:drop-shadow(0 34px 70px rgba(0,0,0,.34));transform:translateZ(0)}
+  @media(max-width:980px){
+    .one-phrase{padding:84px 0 92px}
+    .one-phrase-grid{grid-template-columns:1fr;gap:36px}
+    .one-phrase-copy{width:100%;max-width:660px;text-align:center;margin:0 auto}
+    .one-phrase .eyebrow{justify-content:center}
+    .one-phrase-title{max-width:12ch;margin:32px auto 24px;font-size:clamp(2.65rem,8vw,4rem)}
+    .one-phrase-text{max-width:34rem;margin:0 auto;font-size:clamp(1.05rem,2.8vw,1.25rem)}
+    .one-phrase-media{width:100%;min-height:0}
+    .one-phrase-media img{width:min(100%,760px);max-width:100%}
+  }
+  @media(max-width:640px){
+    .one-phrase{padding:72px 0 80px}
+    .one-phrase-title{font-size:clamp(2.25rem,11vw,3.25rem);line-height:1.04;max-width:11.5ch}
+    .one-phrase-text{font-size:clamp(1rem,4.6vw,1.12rem);line-height:1.5}
+    .one-phrase-media img{width:min(100%,620px);max-width:100%}
+  }
+
+  /* ---------- FEATURED ---------- */
+  .featured{position:relative;z-index:2;border-top:1px solid var(--line-2);border-bottom:1px solid var(--line-2);
+    background:linear-gradient(90deg,rgba(118,89,121,.08),rgba(254,214,232,.045),rgba(118,89,121,.08));padding:26px 0}
+  .featured-inner{display:grid;grid-template-columns:auto minmax(0,1fr);gap:30px;align-items:center}
+  .featured-label{font-size:.68rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);white-space:nowrap}
+  .featured-logos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;align-items:stretch}
+  .featured-logo{min-height:74px;display:flex;align-items:center;justify-content:center;padding:14px 18px;border:1px solid var(--line);
+    border-radius:8px;background:rgba(244,239,244,.94);color:var(--ink);transition:transform .28s var(--ease),border-color .28s,box-shadow .28s}
+  .featured-logo:hover{transform:translateY(-2px);border-color:rgba(254,214,232,.5);box-shadow:0 18px 42px -30px rgba(254,214,232,.7)}
+  .featured-logo img{display:block;max-width:100%;max-height:50px;width:auto;height:auto;object-fit:contain}
+  .featured-logo img.logo-square{max-height:58px}
+  .featured-logo img.logo-station{max-height:34px}
+  .featured-logo img.logo-frenchtech{max-height:62px}
+  @media(max-width:820px){.featured-inner{grid-template-columns:1fr;gap:16px}.featured-label{text-align:center}.featured-logos{grid-template-columns:1fr}}
+
+  /* ---------- TRANSFORM DEMO ---------- */
+  .demo{display:grid;grid-template-columns:1fr auto 1fr;gap:28px;align-items:center;margin-top:8px}
+  @media(max-width:820px){.demo{grid-template-columns:1fr;gap:18px}}
+  .card{border:1px solid var(--line);border-radius:20px;padding:26px;background:rgba(118,89,121,.14)}
+  .voice-card .tag{margin-bottom:18px}
+  .voice-line{font-weight:600;font-style:italic;font-size:1.3rem;line-height:1.4;color:#F2E7F2}
+  .mini-wave{display:flex;align-items:center;gap:3px;height:26px;margin-top:20px}
+  .mini-wave span{width:3px;border-radius:4px;background:var(--grad);opacity:.9;animation:eq 1.2s ease-in-out infinite}
+  .arrow{font-size:1.5rem;text-align:center}
+  .arrow span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:700}
+  @media(max-width:820px){.arrow{transform:rotate(90deg)}}
+  .shop-card{background:rgba(118,89,121,.2)}
+  .shop-card .shop-name{font-weight:800;font-size:1.4rem;letter-spacing:-.02em}
+  .shop-card .shop-cat{font-size:.68rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--pink);margin:8px 0 18px}
+  .shop-row{display:flex;justify-content:space-between;padding:12px 0;border-top:1px solid var(--line-2);font-size:.95rem}
+  .shop-row span:last-child{color:var(--dim)}
+  .shop-card .shop-btn{margin-top:18px;width:100%;text-align:center;background:rgba(254,214,232,.14);color:var(--pink);
+    border:1px solid rgba(254,214,232,.4);border-radius:12px;padding:11px;font-weight:600;font-size:.92rem}
+  .demo-caption{text-align:center;color:var(--dim);font-size:1rem;margin-top:34px;font-style:italic;font-weight:500}
+
+  /* ---------- PROBLEM ---------- */
+  .probs{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  @media(max-width:820px){.probs{grid-template-columns:1fr}}
+  .prob{min-height:260px;padding:34px 30px;border:1px solid var(--line);border-radius:20px;background:rgba(118,89,121,.1);
+    transition:border-color .35s var(--ease),background .35s var(--ease),transform .35s var(--ease)}
+  .prob:hover{border-color:rgba(254,214,232,.34);background:rgba(118,89,121,.16);transform:translateY(-3px)}
+  .prob .pn{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;
+    border:1px solid rgba(254,214,232,.28);background:rgba(254,214,232,.09);font-weight:800;font-size:.72rem;
+    letter-spacing:.04em;color:var(--pink)}
+  .prob h3{font-weight:700;font-size:1.28rem;margin:22px 0 10px;letter-spacing:-.01em}
+  .prob p{color:#C9BBCB;font-size:.97rem;font-weight:330}
+
+  /* ---------- STEPS ---------- */
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  @media(max-width:820px){.steps{grid-template-columns:1fr}}
+  .step{border:1px solid var(--line);border-radius:20px;padding:32px 28px;background:rgba(118,89,121,.1);transition:border-color .4s,transform .4s var(--ease),background .4s}
+  .step:hover{border-color:rgba(254,214,232,.4);transform:translateY(-4px);background:rgba(118,89,121,.18)}
+  .step .si{font-weight:800;font-style:italic;font-size:2.2rem;line-height:1;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .step h3{font-weight:700;font-size:1.35rem;margin:18px 0 12px;letter-spacing:-.015em}
+  .step p{color:#C9BBCB;font-size:.98rem;font-weight:330}
+
+  /* ---------- DJASSAMAN FLOW ---------- */
+  .flow-shell{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(280px,.85fr);gap:34px;align-items:start}
+  @media(max-width:900px){.flow-shell{grid-template-columns:1fr}}
+  .flow-main,.flow-side,.ops-band{border:1px solid var(--line);border-radius:20px;background:rgba(118,89,121,.12)}
+  .flow-main{padding:30px}
+  .flow-side{padding:30px;background:rgba(118,89,121,.18)}
+  .flow-kicker{display:flex;align-items:center;flex-wrap:wrap;gap:12px;font-size:.78rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--pink);margin-bottom:14px}
+  .flow-kicker span{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:rgba(254,214,232,.15);
+    border:1px solid rgba(254,214,232,.32);font-size:.72rem}
+  .flow-main h3,.ops-band h3{font-weight:800;font-size:clamp(1.5rem,3vw,2rem);line-height:1.1;letter-spacing:-.025em;margin-bottom:12px}
+  .flow-intro,.ops-band p{color:#D6C8D8;font-weight:330;max-width:58ch}
+  .dialogues{display:grid;gap:18px;margin-top:26px}
+  .dialogue{background:#121016;border:1px solid rgba(244,239,244,.12);border-radius:22px;padding:20px 22px;overflow:hidden;
+    box-shadow:0 22px 60px -34px rgba(0,0,0,.72)}
+  .dialogue-line{display:flex;gap:9px;align-items:flex-start;color:#F6EFF6;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    font-size:.78rem;line-height:1.55}
+  .dialogue-line + .dialogue-line{margin-top:8px}
+  .dialogue-line .avatar{width:1.2rem;flex:none}
+  .dialogue-line span:last-child{min-width:0;overflow-wrap:anywhere}
+  .dialogue-line strong{font-weight:700;color:#9BE7D5}
+  .dialogue-line.merchant strong{color:var(--pink)}
+  .backstage{display:grid;gap:18px;margin-top:24px}
+  .backstage-step{padding-left:17px;border-left:1px solid rgba(254,214,232,.34)}
+  .backstage-step h4{font-weight:700;font-size:.98rem;letter-spacing:-.01em;margin-bottom:5px;color:#F2E7F2}
+  .backstage-step p{color:#C9BBCB;font-size:.95rem;font-weight:330}
+  .time-chip{margin-top:28px;display:inline-flex;align-items:center;gap:9px;border:1px solid rgba(155,231,213,.34);border-radius:999px;
+    color:#9BE7D5;background:rgba(155,231,213,.08);padding:9px 13px;font-size:.78rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+  .ops-band{margin-top:28px;padding:30px;display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:30px;align-items:start}
+  @media(max-width:820px){.ops-band{grid-template-columns:1fr}}
+  .ops-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+  @media(max-width:640px){.ops-list{grid-template-columns:1fr}}
+  .ops-item{padding-top:16px;border-top:1px solid var(--line)}
+  .ops-item span{display:block;font-weight:700;color:#F2E7F2;margin-bottom:8px}
+  .ops-item p{font-size:.95rem;color:#C9BBCB}
+
+  /* ---------- IMPACT ---------- */
+  .impact{border-radius:28px;padding:clamp(36px,5vw,72px);
+    background:radial-gradient(120% 140% at 0% 0%,rgba(254,214,232,.16),transparent 55%),
+               radial-gradient(120% 140% at 100% 100%,rgba(118,89,121,.4),transparent 55%),
+               rgba(118,89,121,.12);
+    border:1px solid var(--line)}
+  .impact h2{max-width:18ch}
+  .impact p{color:#E4D8E6;font-size:1.12rem;font-weight:330;max-width:58ch;margin-top:24px}
+  .impact-body{display:grid;grid-template-columns:minmax(0,1fr) 190px;gap:clamp(48px,6vw,86px);align-items:center;margin-top:32px;max-width:940px}
+  .impact-body p{margin-top:0}
+  .impact-logo{width:190px;height:190px;border-radius:50%;display:grid;place-items:center;justify-self:center;
+    background:rgba(254,214,232,.08);border:1px solid rgba(254,214,232,.25);
+    box-shadow:0 34px 86px -46px rgba(254,214,232,.82)}
+  .impact-logo img{width:116px;height:110px;object-fit:contain;filter:drop-shadow(0 16px 28px rgba(254,214,232,.26))}
+  @media(max-width:760px){.impact-body{grid-template-columns:1fr;gap:28px}.impact-logo{width:140px;height:140px}.impact-logo img{width:84px;height:80px}}
+  .langs{display:flex;flex-wrap:wrap;gap:14px 30px;margin-top:46px;padding-top:34px;border-top:1px solid var(--line)}
+  .lang{min-width:200px}
+  .lang .lc{font-size:.66rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--pink)}
+  .lang .lt{font-weight:600;font-style:italic;font-size:1.16rem;color:#F2E7F2;margin-top:6px}
+
+  /* ---------- CONTINENTAL AMBITION ---------- */
+  .ambition-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  @media(max-width:900px){.ambition-grid{grid-template-columns:1fr}}
+  .ambition-card{min-height:250px;border:1px solid var(--line);border-radius:20px;padding:34px 30px;
+    background:radial-gradient(120% 120% at 15% 0%,rgba(254,214,232,.1),transparent 45%),rgba(118,89,121,.1);
+    transition:border-color .35s var(--ease),background .35s var(--ease),transform .35s var(--ease)}
+  .ambition-card:hover{border-color:rgba(254,214,232,.34);background:radial-gradient(120% 120% at 15% 0%,rgba(254,214,232,.15),transparent 45%),rgba(118,89,121,.16);transform:translateY(-3px)}
+  .ambition-card .ai{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;
+    border:1px solid rgba(254,214,232,.28);background:rgba(254,214,232,.09);font-weight:800;font-size:.72rem;letter-spacing:.04em;color:var(--pink)}
+  .ambition-card h3{font-weight:700;font-size:1.3rem;margin:22px 0 10px;letter-spacing:-.015em}
+  .ambition-card p{color:#C9BBCB;font-size:.98rem;font-weight:330}
+
+  /* ---------- INVESTOR ---------- */
+  .inv-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:60px;align-items:start}
+  @media(max-width:820px){.inv-grid{grid-template-columns:1fr;gap:36px}}
+  .inv-intro{color:#D6C8D8;font-weight:330;font-size:1.05rem;margin-bottom:30px;max-width:50ch}
+  .inv-list{list-style:none}
+  .inv-list li{padding:16px 0;border-bottom:1px solid var(--line);display:flex;gap:16px;align-items:baseline}
+  .inv-list li .ix{font-weight:700;flex-shrink:0;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .inv-list li span:last-child{color:#D6C8D8;font-weight:330}
+  .inv-box{border:1px solid var(--line);border-radius:20px;padding:32px;background:rgba(118,89,121,.16)}
+  .inv-box .mono{margin-bottom:16px;display:block}
+  .inv-box h3{font-weight:700;font-size:1.55rem;letter-spacing:-.02em;line-height:1.2}
+  .inv-box p{color:#C9BBCB;margin:14px 0 24px;font-size:.98rem;font-weight:330}
+
+  /* ---------- WAITLIST FORM ---------- */
+  .form-sec{padding:104px 0 120px}
+  .form-card{max-width:640px;margin:0 auto;text-align:center}
+  .form-card h2{font-size:clamp(2.1rem,5vw,3.1rem)}
+  .form-card .sub{color:#D6C8D8;margin:20px auto 40px;max-width:42ch;font-weight:330}
+  form{display:flex;flex-direction:column;gap:14px;text-align:left}
+  .field label{font-size:.66rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);display:block;margin-bottom:8px}
+  .field input{width:100%;background:rgba(244,239,244,.05);border:1px solid var(--line);border-radius:13px;
+    padding:14px 16px;color:var(--paper);font-family:inherit;font-size:1rem;transition:border-color .3s,background .3s}
+  .field input:focus{outline:none;border-color:var(--pink);background:rgba(254,214,232,.07)}
+  .field input::placeholder{color:#8a7790}
+  .roles{display:flex;flex-wrap:wrap;gap:9px}
+  .role{font-family:inherit;font-size:.88rem;font-weight:500;cursor:pointer;border:1px solid var(--line);
+    border-radius:999px;padding:9px 16px;color:#C9BBCB;background:transparent;transition:all .25s var(--ease)}
+  .role[aria-pressed="true"]{background:var(--grad);color:var(--ink);border-color:transparent;font-weight:700}
+  .submit{margin-top:8px;background:var(--grad);color:var(--ink);border-radius:13px;padding:16px;font-weight:700;font-size:1.02rem;cursor:pointer;border:none;transition:transform .25s var(--ease),box-shadow .25s}
+  .submit:hover{transform:translateY(-2px);box-shadow:0 14px 38px -10px rgba(254,214,232,.5)}
+  .microcopy{font-size:.66rem;font-weight:500;letter-spacing:.04em;color:var(--dim);text-align:center;margin-top:18px}
+  .success{display:none;border:1px solid rgba(254,214,232,.42);border-radius:20px;padding:40px 30px;background:rgba(254,214,232,.07)}
+  .success.show{display:block;animation:rise .7s var(--ease)}
+  .success .sw{display:inline-flex;gap:3px;align-items:center;height:24px;margin-bottom:18px}
+  .success .sw span{width:3px;border-radius:4px;background:var(--grad);animation:eq 1.2s ease-in-out infinite}
+  .success h3{font-weight:700;font-size:1.55rem;letter-spacing:-.02em}
+  .success p{color:#C9BBCB;margin-top:12px;font-weight:330}
+
+  /* ---------- FOOTER ---------- */
+  footer{border-top:1px solid var(--line);padding:34px 0;text-align:center}
+  .footer-inner{display:grid;grid-template-columns:1fr auto 1fr;gap:24px;align-items:center}
+  .footer-socials{display:flex;align-items:center;gap:10px;justify-self:start}
+  .social-link{width:38px;height:38px;border:1px solid var(--line);border-radius:50%;display:grid;place-items:center;
+    color:var(--dim);background:rgba(244,239,244,.035);transition:color .25s var(--ease),border-color .25s var(--ease),background .25s var(--ease),transform .25s var(--ease)}
+  .social-link:hover{color:var(--pink);border-color:rgba(254,214,232,.42);background:rgba(254,214,232,.07);transform:translateY(-2px)}
+  .social-link svg{width:18px;height:18px;display:block}
+  footer .brand{justify-content:center}
+  footer .brand .mark{width:38px;height:36px}
+  footer .tag{font-style:italic;font-weight:500;color:var(--dim);font-size:1.05rem}
+  footer .meta{justify-self:end;font-size:.72rem;font-weight:600;letter-spacing:.06em;color:var(--dim-2)}
+  @media(max-width:760px){.footer-inner{grid-template-columns:1fr;gap:18px}.footer-socials,footer .meta{justify-self:center}}
+
+  @media(max-width:640px){
+    .wrap{padding:0 20px}
+    header{padding:112px 0 104px}
+    h1.hero{font-size:clamp(2.45rem,10.5vw,3.55rem);max-width:12ch}
+    h2{font-size:clamp(1.9rem,8vw,2.45rem)}
+    .sec,.form-sec{padding:76px 0}
+    .sec-head{margin-bottom:38px}
+    .card,.prob,.step,.flow-main,.flow-side,.ops-band,.inv-box{border-radius:18px;padding:24px 20px}
+    .probs,.steps,.ambition-grid{gap:16px}
+    .prob,.ambition-card{min-height:0}
+    .dialogue{border-radius:18px;padding:18px 16px}
+    .dialogue-line{font-size:.72rem}
+    .roles{gap:8px}
+    .role{padding:9px 13px}
+    .hero-cta{width:100%}
+    .hero-cta .btn{max-width:100%;text-align:center}
+  }
+
+  @media(max-width:420px){
+    .hero-cta .btn-primary{width:100%}
+    h1.hero{font-size:clamp(2.25rem,11vw,2.85rem)}
+    .one-phrase-title{font-size:clamp(2.1rem,10.5vw,2.85rem);max-width:10.8ch}
+  }
+
+  @media(hover:none){
+    .btn-primary:hover,.featured-logo:hover,.prob:hover,.step:hover,.ambition-card:hover,.social-link:hover{
+      transform:none;box-shadow:none;
+    }
+  }
+
+  @media(prefers-reduced-data:reduce){
+    .glow{display:none}
+    .one-phrase-media img,.impact-logo img{filter:none}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none!important;transition:none!important}
+    h1.hero .l,.eyebrow,.wave,.lede,.hero-cta,.scroll-hint,.reveal{opacity:1!important;transform:none!important}
+  }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="#top" class="brand">
+    <img class="mark" src="./djassapplogo.svg" width="34" height="32" alt="" aria-hidden="true">
+    <span class="name">DJASSApp</span>
+  </a>
+  <div class="nav-right">
+    <span class="nav-badge">Pré-lancement · bientôt</span>
+    <a href="#fonctionnement" class="btn btn-ghost">Fonctionnement</a>
+    <a href="#investisseurs" class="btn btn-ghost">Investisseurs</a>
+    <a href="#liste" class="btn btn-primary">Être prévenu</a>
+  </div>
+</nav>
+
+<header id="top">
+  <div class="glow a"></div>
+  <div class="glow b"></div>
+  <div class="wrap hero-inner">
+    <div class="eyebrow">
+      <span class="tick"></span>
+      <span class="mono">Le commerce, par la parole</span>
+    </div>
+    <h1 class="hero">
+      <span class="l">L'entrepreneuriat</span>
+      <span class="l">à portée de <span class="em grad-text">voix.</span></span>
+    </h1>
+
+    <div class="wave" id="wave" aria-hidden="true"></div>
+
+    <p class="lede"><b>Votre voix. Votre commerce.</b><br>Décrivez ce que vous vendez, DJASSApp s'occupe du reste.</p>
+
+    <div class="hero-cta">
+      <a href="#liste" class="btn btn-primary btn-lg">Me prévenir au lancement</a>
+      <a href="#investisseurs" class="btn btn-ghost btn-lg">Espace investisseurs</a>
+    </div>
+  </div>
+  <div class="scroll-hint" aria-hidden="true">
+    <span>Découvrir</span>
+    <span class="bar"></span>
+  </div>
+</header>
+
+<!-- ONE PHRASE -->
+<section class="one-phrase">
+  <div class="wrap one-phrase-grid">
+    <div class="one-phrase-copy reveal">
+      <div class="eyebrow">
+        <span class="tick"></span>
+        <span class="mono">En une phrase</span>
+      </div>
+      <h2 class="one-phrase-title">DJASSApp, c'est <span class="em grad-text">le marché, dans votre poche.</span></h2>
+      <p class="one-phrase-text">Une place de marché en ligne où l'on retrouve les commerçants, les produits et les services autour de soi, réunis au même endroit plutôt que dispersés sur mille pages. Sa particularité : ici, on n'ouvre pas boutique en remplissant des formulaires. On l'ouvre en parlant, guidé par le DJASSAman.</p>
+    </div>
+    <div class="one-phrase-media reveal">
+      <img src="./djassapp-phones-optimized.png"
+        srcset="./djassapp-phones-small.png 1000w, ./djassapp-phones-optimized.png 1500w"
+        sizes="(max-width: 640px) 100vw, (max-width: 980px) 100vw, 55vw"
+        width="1500" height="1240" loading="lazy" decoding="async"
+        alt="Aperçus de l'application DJASSApp sur trois smartphones">
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED -->
+<section class="featured" aria-label="Accompagné par">
+  <div class="wrap featured-inner">
+    <div class="featured-label">Accompagné par</div>
+    <div class="featured-logos">
+      <div class="featured-logo" aria-label="emlyon venture labs">
+        <img class="logo-square" src="https://sites-wordpress.em-lyon.com/venturelabs/files/2024/12/cropped-venturelabs_emlyon_business_school_logo.jpeg" loading="lazy" decoding="async" alt="emlyon venture labs">
+      </div>
+      <div class="featured-logo" aria-label="Station F">
+        <img class="logo-station" src="https://upload.wikimedia.org/wikipedia/commons/d/db/Logo_STATION_F.svg" loading="lazy" decoding="async" alt="Station F">
+      </div>
+      <div class="featured-logo" aria-label="French Tech Saint-Etienne">
+        <img class="logo-frenchtech" src="https://rdv.lafrenchtech-stl.com/images/configuration/logos/65f4627322b84618522253.png" loading="lazy" decoding="async" alt="La French Tech Saint-Etienne Lyon">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRANSFORM DEMO -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow"><span class="tick"></span><span class="mono">Ce que fait le DJASSAman</span></div>
+      <h2>On parle. <span class="em grad-text">La boutique apparaît.</span></h2>
+    </div>
+
+    <div class="demo reveal">
+      <div class="card voice-card">
+        <span class="mono tag">Ce que dit l'entrepreneur</span>
+        <p class="voice-line">« Je vends attiéké avec poisson à Yopougon. Livraison le midi, je prends le mobile money. »</p>
+        <div class="mini-wave" id="miniwave" aria-hidden="true"></div>
+      </div>
+      <div class="arrow"><span>➜</span></div>
+      <div class="card shop-card">
+        <div class="shop-name">Chez Aya — Attiéké</div>
+        <div class="shop-cat">Cuisine · Yopougon</div>
+        <div class="shop-row"><span>Attiéké poisson</span><span>1 500 F</span></div>
+        <div class="shop-row"><span>Livraison</span><span>Le midi</span></div>
+        <div class="shop-row"><span>Paiement</span><span>Mobile money</span></div>
+        <div class="shop-btn">Contacter la vendeuse</div>
+      </div>
+    </div>
+    <p class="demo-caption reveal">Le DJASSAman écoute, structure et publie. Aucun mot à écrire, aucune interface à apprendre.</p>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow"><span class="tick"></span><span class="mono">Le problème</span></div>
+      <h2>Le commerce existe déjà. <span class="em grad-text">Il est juste invisible.</span></h2>
+      <p>En Côte d'Ivoire comme dans une grande partie de l'Afrique, on vend déjà en ligne, sur WhatsApp, Facebook et dans les groupes privés. Mais cette offre reste prisonnière du réseau personnel, noyée dans le flux et presque impossible à retrouver. Il y a les produits, il y a la demande ; ce qui manque, c'est le lien entre les deux.</p>
+    </div>
+    <div class="probs reveal">
+      <div class="prob">
+        <span class="pn">01</span>
+        <h3>Prisonnier de son carnet</h3>
+        <p>Sur WhatsApp, seuls ceux qui ont déjà votre numéro voient vos offres. Votre marché s'arrête à vos contacts.</p>
+      </div>
+      <div class="prob">
+        <span class="pn">02</span>
+        <h3>Noyé dans le flux</h3>
+        <p>Sur Facebook et Instagram, une offre disparaît en quelques heures. La visibilité dépend d'un algorithme, pas du talent.</p>
+      </div>
+      <div class="prob">
+        <span class="pn">03</span>
+        <h3>Barrière de l'écrit</h3>
+        <p>Les outils actuels exigent de longs formulaires et une maîtrise technique. Ils bloquent de facto l'accès des populations non-lettrées ou peu à l'aise avec la tech.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOLUTION / STEPS -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow"><span class="tick"></span><span class="mono">La solution</span></div>
+      <h2>Trois mots suffisent : <span class="em grad-text">parlez, publiez, vendez.</span></h2>
+      <p>Le DJASSAman est le copilote vocal de DJASSApp. Il guide l'entrepreneur par la voix, dans sa langue, pour créer sa présence commerciale et la rendre visible bien au-delà de son cercle.</p>
+    </div>
+    <div class="steps">
+      <div class="step reveal">
+        <div class="si">i.</div>
+        <h3>Parlez</h3>
+        <p>Vous décrivez votre activité comme vous la raconteriez à un client. Pas de champs, pas de menus, juste votre voix.</p>
+      </div>
+      <div class="step reveal">
+        <div class="si">ii.</div>
+        <h3>Publiez</h3>
+        <p>Le DJASSAman transforme vos mots en un profil clair : vos offres, vos prix, votre contact. Une vraie vitrine, en quelques minutes.</p>
+      </div>
+      <div class="step reveal">
+        <div class="si">iii.</div>
+        <h3>Vendez</h3>
+        <p>Vous devenez visible, suivable, joignable. Vos réseaux amplifient ; DJASSApp vous donne enfin une base stable.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DJASSAMAN FUNCTIONING -->
+<section class="sec" id="fonctionnement">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow"><span class="tick"></span><span class="mono">Fonctionnement du DJASSAman</span></div>
+      <h2>Une conversation courte. <span class="em grad-text">Une boutique prête à vendre.</span></h2>
+      <p>Le DJASSAman remplace les formulaires par un échange naturel. Il comprend l'activité, structure les informations, lit les images produits et aide ensuite le marchand à gérer son business à la voix.</p>
+    </div>
+
+    <div class="flow-shell">
+      <div class="flow-main reveal">
+        <div class="flow-kicker"><span>01</span> Onboarding vocal "Zero Friction"</div>
+        <h3>Le marchand parle comme avec une personne, le DJASSAman construit comme un système.</h3>
+        <p class="flow-intro">L'inscription devient une discussion fluide : moins de trois minutes pour passer de la parole à une boutique structurée.</p>
+
+        <div class="dialogues">
+          <div class="dialogue">
+            <p class="dialogue-line"><span class="avatar">🤖</span><span><strong>DJASSAman :</strong> "Bonjour ! Bienvenue sur DJASSApp. En une phrase, tu vends quoi ?"</span></p>
+            <p class="dialogue-line merchant"><span class="avatar">🧑‍💼</span><span><strong>Marchande :</strong> "Moi c'est Fatou, je vends des vêtements de créateurs et des pagnes Wax."</span></p>
+          </div>
+          <div class="dialogue">
+            <p class="dialogue-line"><span class="avatar">🤖</span><span><strong>DJASSAman :</strong> "Magnifique Fatou. Prends en photo les articles que tu veux mettre en vente."</span></p>
+            <p class="dialogue-line merchant"><span class="avatar">🧑‍💼</span><span><strong>Marchande :</strong> "[Prend 3 photos de robes avec l'appareil intégré]"</span></p>
+          </div>
+          <div class="dialogue">
+            <p class="dialogue-line"><span class="avatar">🤖</span><span><strong>DJASSAman :</strong> "Cette robe est superbe. Quel est son nom et son prix ?"</span></p>
+            <p class="dialogue-line merchant"><span class="avatar">🧑‍💼</span><span><strong>Marchande :</strong> "C'est la robe Prestige. Elle est à 5 000 FCFA, mais le client peut discuter."</span></p>
+          </div>
+          <div class="dialogue">
+            <p class="dialogue-line"><span class="avatar">🤖</span><span><strong>DJASSAman :</strong> "C'est noté, elle est enregistrée. Tu as un magasin physique ou un point de retrait ?"</span></p>
+            <p class="dialogue-line merchant"><span class="avatar">🧑‍💼</span><span><strong>Marchande :</strong> "J'ai une petite boutique au marché de Cocody, en face de la SGBCI."</span></p>
+          </div>
+        </div>
+      </div>
+
+      <aside class="flow-side reveal">
+        <span class="mono">Ce que l'IA fait en arrière-plan</span>
+        <div class="backstage">
+          <div class="backstage-step">
+            <h4>Création du profil</h4>
+            <p>Elle crée "Chez Fatou", classe la boutique en Mode / Vêtements et prépare la structure commerciale.</p>
+          </div>
+          <div class="backstage-step">
+            <h4>Analyse des produits</h4>
+            <p>La reconnaissance visuelle isole chaque vêtement, reconnaît les couleurs, les motifs Wax et les éléments utiles à la recherche.</p>
+          </div>
+          <div class="backstage-step">
+            <h4>Fiche produit enrichie</h4>
+            <p>Elle crée la robe Prestige, fixe le prix affiché à 5 000 FCFA et note une négociation possible jusqu'à 4 500 FCFA.</p>
+          </div>
+          <div class="backstage-step">
+            <h4>Mise en ligne</h4>
+            <p>Elle géolocalise le point de retrait, active la boutique et prépare les options de livraison partenaires.</p>
+          </div>
+        </div>
+        <div class="time-chip">Moins de 3 minutes</div>
+      </aside>
+    </div>
+
+    <div class="ops-band reveal">
+      <div>
+        <div class="flow-kicker"><span>02</span> Mode "Voice Ops"</div>
+        <h3>Une fois en ligne, le marchand pilote son activité à la voix.</h3>
+        <p>DJASSApp ne s'arrête pas à la création de boutique. Le DJASSAman devient l'assistant opérationnel du quotidien, sans interface complexe à apprendre.</p>
+      </div>
+      <div class="ops-list">
+        <div class="ops-item">
+          <span>Suivi de l'activité</span>
+          <p>"DJASSAman, j'ai combien de commandes aujourd'hui ?" Il répond avec les commandes en attente, les produits qui marchent et les priorités du jour.</p>
+        </div>
+        <div class="ops-item">
+          <span>Gestion financière</span>
+          <p>"Je veux retirer 150 000 FCFA vers mon compte Wave." Il vérifie le solde, prépare l'opération et demande une validation sécurisée.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- IMPACT / GLOBAL -->
+<section class="sec">
+  <div class="wrap">
+    <div class="impact reveal">
+      <div class="eyebrow"><span class="tick"></span><span class="mono">Au-delà d'une application</span></div>
+      <h2>Une porte d'entrée vers l'économie numérique, pour ceux qu'elle avait oubliés.</h2>
+      <div class="impact-body">
+        <p>Pouvoir vendre ne devrait pas dépendre de savoir lire. Pour des millions de personnes, la barrière n'a jamais été le talent, mais le clavier. Notre symbole, le Fawohodie, signifie la liberté : c'est exactement ce que nous construisons, la liberté d'entreprendre, sans condition de diplôme, de réseau ni d'alphabétisation.</p>
+        <div class="impact-logo" aria-hidden="true">
+          <img src="./djassapplogo.svg" width="116" height="110" loading="lazy" decoding="async" alt="">
+        </div>
+      </div>
+      <p>Le point de départ est volontairement concret : partir du terrain, des vendeurs, des habitudes de paiement et des langues parlées, pour bâtir une infrastructure qui respecte les usages réels.</p>
+      <div class="langs">
+        <div class="lang"><div class="lc">Français</div><div class="lt">L'entrepreneuriat à portée de voix.</div></div>
+        <div class="lang"><div class="lc">English</div><div class="lt">Entrepreneurship, one voice away.</div></div>
+        <div class="lang"><div class="lc">Español</div><div class="lt">Emprender, al alcance de tu voz.</div></div>
+        <div class="lang"><div class="lc">Português</div><div class="lt">Empreender ao alcance da sua voz.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTINENTAL AMBITION -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head centered reveal">
+      <div class="eyebrow"><span class="tick"></span><span class="mono">Ambition continentale &amp; mondiale</span></div>
+      <h2>Né à Abidjan. <span class="em grad-text">Conçu pour les marchés émergents.</span></h2>
+      <p>L'exclusion par la complexité numérique touche plus d'un milliard d'individus dans le monde. Notre architecture voice-first annule la barrière de l'alphabétisation et peut s'adapter aux langues locales.</p>
+    </div>
+    <div class="ambition-grid">
+      <div class="ambition-card reveal">
+        <span class="ai">01</span>
+        <h3>Autonomisation économique</h3>
+        <p>Donner instantanément aux marchands de rue, aux artisanes et aux indépendants les outils des plus grandes enseignes pour élargir leur champ d'action commercial.</p>
+      </div>
+      <div class="ambition-card reveal">
+        <span class="ai">02</span>
+        <h3>Zéro coût d'apprentissage</h3>
+        <p>Aucune interface complexe à maîtriser. L'application comprend l'intention de l'utilisateur à partir de sa simple voix brute.</p>
+      </div>
+      <div class="ambition-card reveal">
+        <span class="ai">03</span>
+        <h3>Scalabilité linguistique</h3>
+        <p>Une infrastructure logicielle qui peut s'étendre au-delà d'Abidjan : l'expansion ne requiert qu'un entraînement de l'IA vocale aux langues locales.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY NOW -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow"><span class="tick"></span><span class="mono">Pourquoi maintenant</span></div>
+      <h2>Les usages sont déjà là. <span class="em grad-text">L'infrastructure reste à bâtir.</span></h2>
+      <p>Le smartphone est devenu un outil de vente. Le mobile money a installé la transaction numérique dans les habitudes. Les réseaux sociaux ont fait naître une génération entière de vendeurs. Tout est prêt, mais il manque un système pensé pour rendre cette énergie visible, organisée et accessible. C'est exactement le vide que DJASSApp vient combler.</p>
+    </div>
+  </div>
+</section>
+
+<!-- INVESTORS -->
+<section class="sec" id="investisseurs">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow"><span class="tick"></span><span class="mono">Investisseurs &amp; partenaires</span></div>
+      <h2>Nous construisons. <span class="em grad-text">Nous cherchons les bonnes mains.</span></h2>
+    </div>
+    <div class="inv-grid">
+      <div class="reveal">
+        <p class="inv-intro">DJASSApp est en phase de pré-lancement. Nous préparons une première version pour les entrepreneurs, un parcours d'inscription vocal avec le DJASSAman, et un pilote terrain à Abidjan. Nous cherchons celles et ceux qui veulent construire cette infrastructure avec nous.</p>
+        <ul class="inv-list">
+          <li><span class="ix">→</span><span>Investisseurs pré-seed &amp; business angels alignés sur l'impact</span></li>
+          <li><span class="ix">→</span><span>Incubateurs &amp; accélérateurs ouest-africains et internationaux</span></li>
+          <li><span class="ix">→</span><span>Talents produit, tech (voix / IA) et growth</span></li>
+          <li><span class="ix">→</span><span>Relais terrain à Abidjan &amp; experts marketplace</span></li>
+          <li><span class="ix">→</span><span>Organisations engagées dans l'inclusion numérique et économique</span></li>
+        </ul>
+      </div>
+      <div class="inv-box reveal">
+        <span class="mono">Parlons-en</span>
+        <h3>Vous voulez en savoir plus, ou en être ?</h3>
+        <p>Recevez le dossier de présentation et suivez les prochaines étapes du projet, du pilote à la levée.</p>
+        <a href="#liste" class="btn btn-primary" style="display:inline-block">Demander le dossier</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAITLIST -->
+<section class="form-sec" id="liste">
+  <div class="wrap">
+    <div class="form-card reveal">
+      <h2>Soyez là <span class="em grad-text">au premier mot.</span></h2>
+      <p class="sub">Entrepreneur, acheteur, investisseur, partenaire ou simplement curieux : rejoignez la liste et suivez le lancement.</p>
+
+      <form id="waitForm" novalidate>
+        <div class="field">
+          <label for="name">Nom</label>
+          <input type="text" id="name" name="name" placeholder="Votre nom" required>
+        </div>
+        <div class="field">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="vous@exemple.com" required>
+        </div>
+        <div class="field">
+          <label>Vous êtes</label>
+          <div class="roles" id="roles">
+            <button type="button" class="role" data-role="Entrepreneur">Entrepreneur</button>
+            <button type="button" class="role" data-role="Acheteur">Acheteur</button>
+            <button type="button" class="role" data-role="Investisseur">Investisseur</button>
+            <button type="button" class="role" data-role="Partenaire">Partenaire</button>
+            <button type="button" class="role" data-role="Presse">Presse</button>
+          </div>
+        </div>
+        <button type="submit" class="submit">Me prévenir au lancement</button>
+        <p class="microcopy">Pas de spam. Seulement les grandes étapes du lancement.</p>
+      </form>
+
+      <div class="success" id="success" role="status">
+        <div class="sw" aria-hidden="true"></div>
+        <h3>C'est noté. À très bientôt.</h3>
+        <p>Vous serez parmi les premiers prévenus. Au plaisir de bâtir ce projet, dès le premier mot.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-inner">
+    <div class="footer-socials" aria-label="Réseaux sociaux">
+      <a class="social-link" href="https://www.facebook.com/profile.php?id=61590465520390" aria-label="Facebook">
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+          <path d="M14 8.2h2.2V5h-2.8c-3 0-4.6 1.8-4.6 4.8v1.8H6v3.2h2.8V22h3.5v-7.2h3l.5-3.2h-3.5V10c0-1.2.5-1.8 1.7-1.8Z"/>
+        </svg>
+      </a>
+      <a class="social-link" href="https://www.linkedin.com/company/djassapp/" aria-label="LinkedIn">
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+          <path d="M6.8 8.9H3.5V20h3.3V8.9ZM5.2 4C4.1 4 3.3 4.8 3.3 5.8s.8 1.8 1.9 1.8 1.9-.8 1.9-1.8S6.3 4 5.2 4Zm15.5 9.6c0-3-1.6-4.9-4.2-4.9-1.8 0-2.8 1-3.3 1.8V8.9H10V20h3.3v-5.8c0-1.6.8-2.5 2-2.5s2 .8 2 2.6V20h3.3v-6.4Z"/>
+        </svg>
+      </a>
+      <a class="social-link" href="https://www.instagram.com/djassapp/" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="4" y="4" width="16" height="16" rx="4.5"/>
+          <circle cx="12" cy="12" r="3.5"/>
+          <path d="M16.7 7.3h.01"/>
+        </svg>
+      </a>
+    </div>
+    <a href="#top" class="brand">
+      <img class="mark" src="./djassapplogo.svg" width="38" height="36" loading="lazy" decoding="async" alt="" aria-hidden="true">
+      <span class="name">DJASSApp</span>
+    </a>
+    <div class="meta">© 2026 DJASSApp. Tous droits réservés.</div>
+  </div>
+</footer>
+
+<script>
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  (function(){
+    const makeBars=(target,heights,step=.07)=>{
+      if(!target) return;
+      heights.forEach((h,i)=>{
+        const s=document.createElement('span');
+        s.style.setProperty('--h', h+'px');
+        s.style.height=Math.max(8,Math.round(h*.55))+'px';
+        if(!reducedMotion){
+          s.style.animationDelay=(i*step)+'s';
+          s.style.animationDuration=(1.1+(i%5)*0.12)+'s';
+        }
+        target.appendChild(s);
+      });
+    };
+
+    makeBars(document.getElementById('wave'),[18,34,52,28,44,62,30,48,22,56,38,26,46,60,32,42,24,50,36,30,54,28,40,20]);
+    makeBars(document.getElementById('miniwave'),[14,22,12,26,16,24,10,20,14,22],.08);
+    document.querySelectorAll('.success .sw').forEach(sw=>{
+      makeBars(sw,[10,16,8,18,12,14],.09);
+    });
+
+    if(!reducedMotion && 'IntersectionObserver' in window){
+      const motionIO=new IntersectionObserver((entries)=>{
+        entries.forEach(entry=>{
+          entry.target.classList.toggle('motion-paused',!entry.isIntersecting);
+        });
+      },{rootMargin:'80px 0px'});
+      document.querySelectorAll('.wave,.mini-wave,.success .sw').forEach(el=>motionIO.observe(el));
+    }
+  })();
+
+  const nav=document.getElementById('nav');
+  let navTicking=false;
+  const updateNav=()=>{
+    nav.classList.toggle('scrolled',scrollY>40);
+    navTicking=false;
+  };
+  addEventListener('scroll',()=>{
+    if(!navTicking){
+      requestAnimationFrame(updateNav);
+      navTicking=true;
+    }
+  },{passive:true});
+  updateNav();
+
+  document.querySelectorAll('a[href^="#"]').forEach(link=>{
+    link.addEventListener('click',(event)=>{
+      const href=link.getAttribute('href');
+      if(!href || href.length<=1) return;
+      const target=document.getElementById(href.slice(1));
+      if(!target) return;
+      event.preventDefault();
+      const top=target===document.getElementById('top') ? 0 : target.getBoundingClientRect().top + scrollY - 78;
+      scrollTo({top:Math.max(0,top),behavior:reducedMotion?'auto':'smooth'});
+      history.pushState(null,'',href);
+    });
+  });
+
+  const revealEls=document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window){
+    const io=new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}});
+    },{threshold:0.12,rootMargin:'0px 0px -6% 0px'});
+    revealEls.forEach(el=>io.observe(el));
+  }else{
+    revealEls.forEach(el=>el.classList.add('in'));
+  }
+
+  let selectedRole='';
+  const roleButtons=document.querySelectorAll('.role');
+  roleButtons.forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      roleButtons.forEach(b=>b.setAttribute('aria-pressed','false'));
+      btn.setAttribute('aria-pressed','true');
+      selectedRole=btn.dataset.role;
+    });
+  });
+
+  // Front-end only. Pour collecter réellement : branche ce formulaire à
+  // Tally / Formspree / Mailchimp en remplaçant le bloc ci-dessous par un fetch().
+  const form=document.getElementById('waitForm');
+  const success=document.getElementById('success');
+  form.addEventListener('submit',(e)=>{
+    e.preventDefault();
+    const name=document.getElementById('name');
+    const email=document.getElementById('email');
+    if(!name.value.trim()){name.focus();return}
+    if(!email.checkValidity()){email.focus();return}
+    form.style.display='none';
+    success.classList.add('show');
+    success.scrollIntoView({behavior:reducedMotion?'auto':'smooth',block:'center'});
+  });
+</script>
+</body>
+</html>
